@@ -1,29 +1,27 @@
 let localStorage = window.localStorage
-let todoList = []
+let toDoList = []
 
-let pastTodos = localStorage.getItem("todos").replace(/[\[\]\"\"\,]+/g, "")
-todoList = [...pastTodos]
-
-
+let pastToDos = localStorage.getItem("todos").replace(/[\[\]\"\"]+/g, "")
+pastToDos.split(',').forEach(word => toDoList.push(word))
 
 const addButton = document.querySelector(".addButton")
-let inputVal = document.querySelector(".input")
+let inputVal = document.querySelector(".inputMain")
 const container = document.querySelector(".container")
 
-class Todo {
+class ToDo {
   constructor(name) {
-    this.createTodo(name)
+    this.createToDo(name)
   }
   
-  remove(todo) {
-    container.removeChild(todo) 
-    localStorage.removeItem(todo)
-    let deleteIdx = todoList.indexOf(todo)
-    todoList.splice(deleteIdx, 1)
-    localStorage.setItem("todos", JSON.stringify(todoList))
+  remove(toDo) {
+    container.removeChild(toDo) 
+    localStorage.removeItem(toDo)
+    let deleteIdx = toDoList.indexOf(toDo)
+    toDoList.splice(deleteIdx, 1)
+    localStorage.setItem("todos", JSON.stringify(toDoList))
   }
 
-  createTodo(name) {
+  createToDo(name) {
     let input = document.createElement("input")
     input.value = name
     input.type = "text"
@@ -33,15 +31,15 @@ class Todo {
     deleteButton.classList.add("deleteButton")
     deleteButton.innerHTML="Delete"
 
-    let todoItem = document.createElement("div")
-    todoItem.classList.add("todo")    
+    let toDoItem = document.createElement("div")
+    toDoItem.classList.add("toDo")    
     
-    container.appendChild(todoItem)
+    container.appendChild(toDoItem)
     
-    todoItem.appendChild(input)
-    todoItem.appendChild(deleteButton)
+    toDoItem.appendChild(input)
+    toDoItem.appendChild(deleteButton)
     
-    deleteButton.addEventListener("click", () => this.remove(todoItem))
+    deleteButton.addEventListener("click", () => this.remove(toDoItem))
     
    
   }
@@ -50,16 +48,17 @@ class Todo {
  function validation() {
      let cleanVal = inputVal.value.replace(/^.*?(?=[\^#%&$\*:<>\?/\{\|\}]).*$/g, "")
    if (cleanVal !== "") {
-     new Todo(cleanVal)
-     todoList.push(cleanVal)
-    localStorage.setItem("todos", JSON.stringify(todoList))
+     new ToDo(cleanVal)
+     toDoList.push(cleanVal)
+    localStorage.setItem("todos", JSON.stringify(toDoList))
     inputVal.value = "" 
 
   }
 }
-let joinedToDoList = todoList.join("")
-for (let i = 0; i < joinedToDoList.length; i++) {
-  new Todo(joinedToDoList[i])
+
+for (let i = 0; i < toDoList.length; i++) {
+  new ToDo(toDoList[i])
 }
+localStorage.setItem("todos", JSON.stringify(toDoList)) //need it to work for more than 2 refreshes
 
 addButton.addEventListener("click", validation)

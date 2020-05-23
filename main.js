@@ -1,6 +1,14 @@
-const addButton = document.querySelector('.addButton')
-let inputVal = document.querySelector('.input')
-const container = document.querySelector('.container')
+let localStorage = window.localStorage
+let todoList = []
+
+let pastTodos = localStorage.getItem("todos").replace(/[\[\]\"\"\,]+/g, "")
+todoList = [...pastTodos]
+
+
+
+const addButton = document.querySelector(".addButton")
+let inputVal = document.querySelector(".input")
+const container = document.querySelector(".container")
 
 class Todo {
   constructor(name) {
@@ -9,39 +17,49 @@ class Todo {
   
   remove(todo) {
     container.removeChild(todo) 
+    localStorage.removeItem(todo)
+    let deleteIdx = todoList.indexOf(todo)
+    todoList.splice(deleteIdx, 1)
+    localStorage.setItem("todos", JSON.stringify(todoList))
   }
 
   createTodo(name) {
-    let todoContainer = document.createElement('div')
-    todoContainer.classList.add('todo')
-    
-    let input = document.createElement('input')
+    let input = document.createElement("input")
     input.value = name
     input.type = "text"
-    inputVal.value = ""  //refreshes the input bar after a todo has been created
+    localStorage.setItem("todos", name)
     
-    let deleteButton = document.createElement('button')
-    deleteButton.classList.add('deleteButton')
+    let deleteButton = document.createElement("button")
+    deleteButton.classList.add("deleteButton")
     deleteButton.innerHTML="Delete"
 
-    let todoItem = document.createElement('div')
-    todoItem.classList.add('todo')    
+    let todoItem = document.createElement("div")
+    todoItem.classList.add("todo")    
     
     container.appendChild(todoItem)
     
     todoItem.appendChild(input)
     todoItem.appendChild(deleteButton)
     
-    deleteButton.addEventListener('click', () => this.remove(todoItem))
+    deleteButton.addEventListener("click", () => this.remove(todoItem))
+    
    
   }
 
 }
+ function validation() {
+     let cleanVal = inputVal.value.replace(/^.*?(?=[\^#%&$\*:<>\?/\{\|\}]).*$/g, "")
+   if (cleanVal !== "") {
+     new Todo(cleanVal)
+     todoList.push(cleanVal)
+    localStorage.setItem("todos", JSON.stringify(todoList))
+    inputVal.value = "" 
 
-function validation() {
-  if (inputVal.value !== '') {
-    new Todo(inputVal.value)
   }
 }
+let joinedToDoList = todoList.join("")
+for (let i = 0; i < joinedToDoList.length; i++) {
+  new Todo(joinedToDoList[i])
+}
 
-addButton.addEventListener('click', validation)
+addButton.addEventListener("click", validation)

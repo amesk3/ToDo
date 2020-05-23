@@ -4,13 +4,16 @@ let toDoList = []
 let pastToDos = localStorage.getItem("todos").replace(/[\[\]\"\"]+/g, "")
 pastToDos.split(',').forEach(word => toDoList.push(word))
 
+const submitButton = document.querySelector(".submitButton")
 const addButton = document.querySelector(".addButton")
 let inputVal = document.querySelector(".inputMain")
 const container = document.querySelector(".container")
+const finalToDos = document.querySelector(".finalToDos")
 
 class ToDo {
   constructor(name) {
     this.createToDo(name)
+    this.submitToDo()
   }
   
   remove(toDo) {
@@ -18,6 +21,16 @@ class ToDo {
     localStorage.removeItem(toDo)
     let deleteIdx = toDoList.indexOf(toDo)
     toDoList.splice(deleteIdx, 1)
+    localStorage.setItem("todos", JSON.stringify(toDoList))
+  }
+  
+  complete() {
+    console.log('todolist', toDoList)
+    toDoList.map(item => {
+      console.log('tem', item)
+      finalToDos.appendChild(document.createTextNode(item))
+    })
+    toDoList = []
     localStorage.setItem("todos", JSON.stringify(toDoList))
   }
 
@@ -40,8 +53,11 @@ class ToDo {
     toDoItem.appendChild(deleteButton)
     
     deleteButton.addEventListener("click", () => this.remove(toDoItem))
-    
    
+  }
+  
+  submitToDo() {
+    submitButton.addEventListener("click", ()=> this.complete())
   }
 
 }
@@ -54,7 +70,9 @@ class ToDo {
     inputVal.value = "" 
 
   }
-}
+ }
+
+
 
 for (let i = 0; i < toDoList.length; i++) {
   new ToDo(toDoList[i])
@@ -62,3 +80,4 @@ for (let i = 0; i < toDoList.length; i++) {
 localStorage.setItem("todos", JSON.stringify(toDoList)) //need it to work for more than 2 refreshes
 
 addButton.addEventListener("click", validation)
+submitButton.addEventListener("click", ToDo.submitToDo)

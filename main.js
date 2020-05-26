@@ -11,7 +11,6 @@ const submitButton = document.querySelector(".submitButton")
 const addButton = document.querySelector(".addButton")
 let inputVal = document.querySelector(".inputMain")
 const container = document.querySelector(".container")
-const finalToDos = document.querySelector(".finalToDos")
 
 class ToDo {
   constructor(name) {

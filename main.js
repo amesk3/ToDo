@@ -1,17 +1,16 @@
 let localStorage = window.localStorage
-let toDoList = []
+let toDoList = [] //inputs are submitted as an array...
 
 let pastToDos = localStorage.getItem("todos")
-if (pastToDos) {
-  pastTodos = pastTodos ? pastTodos.replace(/[\[\]\"\"]+/g, "") : pastTodos
-  pastToDos.split(',').forEach(word => toDoList.push(word))
+pastToDos = pastToDos ? pastToDos.replace(/[\[\]\"\"]+/g, "") : pastToDos
+if (pastToDos !== null) {
+  pastToDos.split(',').forEach(word => { if (word.length > 0) return toDoList.push(word) })
 }
 
 const submitButton = document.querySelector(".submitButton")
 const addButton = document.querySelector(".addButton")
 let inputVal = document.querySelector(".inputMain")
 const container = document.querySelector(".container")
-const finalToDos = document.querySelector(".finalToDos")
 
 class ToDo {
   constructor(name) {
@@ -28,13 +27,11 @@ class ToDo {
   }
   
   complete() {
-    console.log('todolist', toDoList)
-    toDoList.map(item => {
-      console.log('tem', item)
-      finalToDos.appendChild(document.createTextNode(item))
-    })
-    toDoList = []
-    localStorage.setItem("todos", JSON.stringify(toDoList))
+    //submit should not do anything since we don't have a backend
+    console.log('To do list submission', toDoList)
+  
+    localStorage.clear() //clears the list since current items were submitted
+
   }
 
   createToDo(name) {

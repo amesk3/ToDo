@@ -1,5 +1,5 @@
 let localStorage = window.localStorage
-let toDoList = [] //inputs are submitted as an array...
+let toDoList = [] //inputs are submitted as an array.
 
 let pastToDos = localStorage.getItem("todos")
 pastToDos = pastToDos ? pastToDos.replace(/[\[\]\"\"]+/g, "") : pastToDos
@@ -61,14 +61,16 @@ class ToDo {
   }
 
 }
- function validation() {
-     let cleanVal = inputVal.value.replace(/^.*?(?=[\^#%&$\*:<>\?/\{\|\}]).*$/g, "")
-   if (cleanVal !== "") {
-     new ToDo(cleanVal)
-     toDoList.push(cleanVal)
+function validation() {
+     let cleanVal = inputVal.value.replace(/[\^#%&$\*:<>\?/\{\|\}]/g, "")
+  if (cleanVal !== "") {
+    new ToDo(cleanVal)
+    toDoList.push(cleanVal)
     localStorage.setItem("todos", JSON.stringify(toDoList))
-    inputVal.value = "" 
+    inputVal.value = ""
 
+  } else {
+    alert("Illegal values detected. You cannot use illegal values.")
   }
  }
 

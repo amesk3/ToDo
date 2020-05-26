@@ -11,6 +11,7 @@ const submitButton = document.querySelector(".submitButton")
 const addButton = document.querySelector(".addButton")
 let inputVal = document.querySelector(".inputMain")
 const container = document.querySelector(".container")
+const finalToDos = document.querySelector(".finalToDos")
 
 class ToDo {
   constructor(name) {
@@ -27,10 +28,12 @@ class ToDo {
   }
   
   complete() {
+
     //submit should not do anything since we don't have a backend
     console.log('To do list submission', toDoList)
   
     localStorage.clear() //clears the list since current items were submitted
+
 
   }
 

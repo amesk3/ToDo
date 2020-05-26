@@ -64,8 +64,9 @@ class ToDo {
 
 }
 function validation() {
-     let cleanVal = inputVal.value.replace(/[\^#%&$\*:<>\?/\{\|\}]/g, "")
-  if (cleanVal !== "") {
+  let cleanVal = inputVal.value.replace(/[\^#%&$\*:<>\?/\{\|\}]/g, "")
+  cleanVal = cleanVal.replace(/\s\s+/g, ' ')
+  if (cleanVal !== "" && cleanVal !==" ") {
     new ToDo(cleanVal)
     toDoList.push(cleanVal)
     localStorage.setItem("todos", JSON.stringify(toDoList))

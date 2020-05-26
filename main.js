@@ -1,8 +1,11 @@
 let localStorage = window.localStorage
-let toDoList = []
+let toDoList = [] //inputs are submitted as an array.
 
-let pastToDos = localStorage.getItem("todos").replace(/[\[\]\"\"]+/g, "")
-pastToDos.split(',').forEach(word => toDoList.push(word))
+let pastToDos = localStorage.getItem("todos")
+pastToDos = pastToDos ? pastToDos.replace(/[\[\]\"\"]+/g, "") : pastToDos
+if (pastToDos !== null) {
+  pastToDos.split(',').forEach(word => { if (word.length > 0) return toDoList.push(word) })
+}
 
 const submitButton = document.querySelector(".submitButton")
 const addButton = document.querySelector(".addButton")
@@ -25,13 +28,13 @@ class ToDo {
   }
   
   complete() {
-    console.log('todolist', toDoList)
-    toDoList.map(item => {
-      console.log('tem', item)
-      finalToDos.appendChild(document.createTextNode(item))
-    })
-    toDoList = []
-    localStorage.setItem("todos", JSON.stringify(toDoList))
+
+    //submit should not do anything since we don't have a backend
+    console.log('To do list submission', toDoList)
+  
+    localStorage.clear() //clears the list since current items were submitted
+
+
   }
 
   createToDo(name) {
@@ -61,14 +64,16 @@ class ToDo {
   }
 
 }
- function validation() {
-     let cleanVal = inputVal.value.replace(/^.*?(?=[\^#%&$\*:<>\?/\{\|\}]).*$/g, "")
-   if (cleanVal !== "") {
-     new ToDo(cleanVal)
-     toDoList.push(cleanVal)
+function validation() {
+     let cleanVal = inputVal.value.replace(/[\^#%&$\*:<>\?/\{\|\}]/g, "")
+  if (cleanVal !== "") {
+    new ToDo(cleanVal)
+    toDoList.push(cleanVal)
     localStorage.setItem("todos", JSON.stringify(toDoList))
-    inputVal.value = "" 
+    inputVal.value = ""
 
+  } else {
+    alert("Illegal values detected. You cannot use illegal values.")
   }
  }
 
